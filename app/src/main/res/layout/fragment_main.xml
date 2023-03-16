@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="?colorBackground"
+   >
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
+    <FrameLayout
+        android:id="@+id/fl_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:layout_gravity="bottom"
+        android:background="?colorSurface">
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_bar_height"
+            android:baselineAligned="false"
+            android:orientation="horizontal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_thin"
+            android:background="?colorSurface" />
+
+    </FrameLayout>
+
+</FrameLayout>

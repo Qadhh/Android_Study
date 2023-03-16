@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_bar_height">49dp</dimen>
+    <dimen name="line_thin">2px</dimen>
+    <dimen name="item_menu_tv_size">10sp</dimen>
+</resources>

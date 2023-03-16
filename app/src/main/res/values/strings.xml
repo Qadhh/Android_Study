@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android_Study</string>
+    <string name="item_menu_mine">我的</string>
 </resources>

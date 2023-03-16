@@ -1,4 +1,4 @@
-package com.example.android_study.view;
+package com.example.android_study.activity;
 
 import android.view.Window;
 

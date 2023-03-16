@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import com.example.android_study.presenter.UserArticlePresenter;
 
-public class UserArticleFragment extends Fragment {
+public class UserArticleFragment extends MvpFragment<UserArticlePresenter> {
 
     private TextView mTextView;
 
@@ -29,5 +29,25 @@ public class UserArticleFragment extends Fragment {
         mTextView.setTextSize(22);
 
         return mTextView;
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return 0;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected UserArticlePresenter initPresenter() {
+        return new UserArticlePresenter();
+    }
+
+    @Override
+    protected void loadData() {
+
     }
 }
