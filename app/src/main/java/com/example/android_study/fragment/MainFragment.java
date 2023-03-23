@@ -13,12 +13,12 @@ import com.example.android_study.adapter.MainFragmentPagerAdapter;
 import com.example.android_study.adapter.MineAdapter;
 import com.example.android_study.adapter.QuestionAdapter;
 import com.example.android_study.bean.TabBean;
-import com.example.android_study.mvp.MvpPresenter;
+import com.example.lib_core_mvp.presenter.MvpPresenter;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
 
-public class MainFragment extends MvpFragment {
+public class MainFragment extends BaseFragment {
 
     protected View mRootView = null;
     @BindView(R.id.vp_tab)
@@ -34,6 +34,11 @@ public class MainFragment extends MvpFragment {
         return new MainFragment();
     }
 
+
+    @Override
+    protected MvpPresenter createPresenter() {
+        return null;
+    }
 
     protected int getLayoutRes() {
         return R.layout.fragment_main;
@@ -67,12 +72,22 @@ public class MainFragment extends MvpFragment {
     }
 
     @Override
-    protected MvpPresenter initPresenter() {
-        return null;
+    protected void loadData() {
+
     }
 
     @Override
-    protected void loadData() {
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void succeed() {
+
+    }
+
+    @Override
+    public void error() {
 
     }
 }

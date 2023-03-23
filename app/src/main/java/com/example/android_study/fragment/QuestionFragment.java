@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.android_study.presenter.QuestionPresenter;
 
-public class QuestionFragment extends MvpFragment<QuestionPresenter> {
+public class QuestionFragment extends BaseFragment<QuestionPresenter> {
     public static QuestionFragment create() {
         return new QuestionFragment();
     }
@@ -28,6 +28,11 @@ public class QuestionFragment extends MvpFragment<QuestionPresenter> {
     }
 
     @Override
+    protected QuestionPresenter createPresenter() {
+        return new QuestionPresenter();
+    }
+
+    @Override
     protected int getLayoutRes() {
         return 0;
     }
@@ -38,12 +43,22 @@ public class QuestionFragment extends MvpFragment<QuestionPresenter> {
     }
 
     @Override
-    protected QuestionPresenter initPresenter() {
-        return new QuestionPresenter();
+    protected void loadData() {
+
     }
 
     @Override
-    protected void loadData() {
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void succeed() {
+
+    }
+
+    @Override
+    public void error() {
 
     }
 }

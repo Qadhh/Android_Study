@@ -1,22 +1,22 @@
 package com.example.android_study.activity;
 
+import android.content.Context;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.android_study.R;
 import com.example.android_study.adapter.FixedFragmentPagerAdapter;
 import com.example.android_study.fragment.MainFragment;
 import com.example.android_study.fragment.UserArticleFragment;
-import com.example.android_study.mvp.MvpActivity;
 import com.example.android_study.presenter.MainPresenter;
-import com.example.android_study.util.LogUtil;
+import com.example.lib_core_mvp.util.LogUtil;
+import com.example.lib_core_mvp.presenter.MvpPresenter;
 
 import butterknife.BindView;
 
-
-public class MainActivity extends MvpActivity {
-
+public class HomeActivity extends BaseActivity {
 
     @BindView(R.id.vp)
     ViewPager vp;
@@ -24,7 +24,6 @@ public class MainActivity extends MvpActivity {
 
     @Override
     protected void initWindow() {
-
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         //getWindow().setBackgroundDrawableResource(R.color.black);
     }
@@ -32,11 +31,6 @@ public class MainActivity extends MvpActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
-    }
-
-    @Override
-    protected MainPresenter initPresenter() {
-        return new MainPresenter();
     }
 
     @Override
@@ -86,13 +80,30 @@ public class MainActivity extends MvpActivity {
 
     }
 
+    @NonNull
     @Override
-    public void showArticleSuccess() {
+    public MvpPresenter createPresenter() {
+
+        return new MainPresenter();
+    }
+
+    @Override
+    public void showToast(String message) {
 
     }
 
     @Override
-    public void showArticleFail() {
+    public void succeed() {
 
+    }
+
+    @Override
+    public void error() {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
     }
 }

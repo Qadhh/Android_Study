@@ -9,9 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.example.android_study.presenter.UserArticlePresenter;
 
-public class UserArticleFragment extends MvpFragment<UserArticlePresenter> {
+public class UserArticleFragment extends BaseFragment<UserArticlePresenter> {
 
     private TextView mTextView;
 
@@ -32,6 +33,11 @@ public class UserArticleFragment extends MvpFragment<UserArticlePresenter> {
     }
 
     @Override
+    protected UserArticlePresenter createPresenter() {
+        return new UserArticlePresenter();
+    }
+
+    @Override
     protected int getLayoutRes() {
         return 0;
     }
@@ -42,12 +48,22 @@ public class UserArticleFragment extends MvpFragment<UserArticlePresenter> {
     }
 
     @Override
-    protected UserArticlePresenter initPresenter() {
-        return new UserArticlePresenter();
+    protected void loadData() {
+
     }
 
     @Override
-    protected void loadData() {
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void succeed() {
+
+    }
+
+    @Override
+    public void error() {
 
     }
 }

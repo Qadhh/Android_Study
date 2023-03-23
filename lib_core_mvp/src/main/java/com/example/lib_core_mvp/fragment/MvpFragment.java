@@ -1,7 +1,8 @@
-package com.example.android_study.fragment;
+package com.example.lib_core_mvp.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.lib_core_mvp.util.LogUtil;
-import com.example.lib_core_mvp.presenter.BasePresenter;
+import com.example.lib_core_mvp.presenter.MvpPresenter;
+import com.example.lib_core_mvp.view.MvpView;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
-public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
+public abstract class MvpFragment<P extends MvpPresenter> extends Fragment implements MvpView {
     protected View mRootView = null;
-    private Unbinder mUnbinder = null;
+    private P mPresenter;
+    private final String TAG = "MvpFragment";
 
     /**
      * 执行该方法时，Fragment与Activity已经完成绑定，该方法有一个Activity类型的参数，
@@ -27,7 +26,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        LogUtil.d("zx0315", "-----------onAttach---------");
+        Log.d(TAG, "-----------onAttach---------");
     }
 
     /**
@@ -36,7 +35,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.d("zx0315", "-----------onCreate---------");
+        Log.d(TAG, "-----------onCreate---------");
     }
 
     /**
@@ -44,18 +43,18 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
      * 但是不建议执行耗时的操作，比如读取数据库数据列表。
      */
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        LogUtil.d("zx0315", "--------onCreateView----------");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "--------onCreateView----------");
         if (mRootView == null) {
             final int layoutId = getLayoutRes();
             if (layoutId > 0) {
-                mRootView = inflater.inflate(getLayoutRes(), container, false);
-                mUnbinder = ButterKnife.bind(this, /*getRootView()*/mRootView);
+                mRootView = inflater.inflate(layoutId, container, false);
+
             }
         }
         return mRootView;
     }
+
 
     /**
      * onCreateView 返回后，但在任何已保存状态恢复到视图之前立即调用。
@@ -65,7 +64,8 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
+        mPresenter = getPresenter();
+        initialize();
     }
 
 
@@ -77,7 +77,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtil.d("zx0315", "--------onActivityCreated----------");
+        Log.d(TAG, "--------onActivityCreated----------");
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LogUtil.d("zx0315", "--------onStart----------");
+        Log.d(TAG, "--------onStart----------");
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        LogUtil.d("zx0315", "--------onResume----------");
+        Log.d(TAG, "--------onResume----------");
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        LogUtil.d("zx0315", "--------onPause----------");
+        Log.d(TAG, "--------onPause----------");
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        LogUtil.d("zx0315", "--------onSaveInstanceState----------");
+        Log.d(TAG, "--------onSaveInstanceState----------");
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        LogUtil.d("zx0315", "--------onStop----------");
+        Log.d(TAG, "--------onStop----------");
     }
 
     /**
@@ -133,9 +133,10 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LogUtil.d("zx0315", "--------onDestroyView----------");
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
+        Log.d(TAG, "--------onDestroyView----------");
+        if (mPresenter != null) {
+            mPresenter.destroy();
+            mPresenter = null;
         }
     }
 
@@ -145,7 +146,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtil.d("zx0315", "--------onDestroy----------");
+        Log.d(TAG, "--------onDestroy----------");
     }
 
     /**
@@ -154,7 +155,7 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        LogUtil.d("zx0315", "--------onDetach----------");
+        Log.d(TAG, "--------onDetach----------");
     }
 
     /**
@@ -167,8 +168,36 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.d("zx0315", "--------setUserVisibleHint----------");
+        Log.d(TAG, "--------setUserVisibleHint----------");
     }
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
+
+    public void initialize() {
+        initView();
+        loadData();
+    }
+
+
+    /**
+     * 子类通过调用该方法，获得绑定的presenter
+     */
+    protected P getPresenter() {
+        if (mPresenter == null) {
+            mPresenter = createPresenter();
+
+        }
+        if (mPresenter != null) {
+            mPresenter.attachView(this);
+        }
+        return mPresenter;
+    }
+
+    protected abstract P createPresenter();
 
 
     /**
@@ -182,12 +211,11 @@ public abstract class MvpFragment<P extends BasePresenter> extends Fragment {
     protected abstract void initView();
 
     /**
-     * 初始化presenter
-     */
-    protected abstract P initPresenter();
-
-    /**
      * 绑定数据
      */
     protected abstract void loadData();
+
+    public View getmRootView() {
+        return mRootView;
+    }
 }

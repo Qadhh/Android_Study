@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.android_study.presenter.HomePresenter;
 
-public class HomeFragment extends MvpFragment<HomePresenter> {
+public class HomeFragment extends BaseFragment<HomePresenter> {
     public static HomeFragment create() {
         return new HomeFragment();
     }
@@ -28,6 +28,11 @@ public class HomeFragment extends MvpFragment<HomePresenter> {
     }
 
     @Override
+    protected HomePresenter createPresenter() {
+        return new HomePresenter();
+    }
+
+    @Override
     protected int getLayoutRes() {
         return 0;
     }
@@ -38,16 +43,25 @@ public class HomeFragment extends MvpFragment<HomePresenter> {
     }
 
     @Override
-    protected HomePresenter initPresenter() {
-        return new HomePresenter();
-    }
-
-    @Override
     protected void loadData() {
 
     }
 
 
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void succeed() {
+
+    }
+
+    @Override
+    public void error() {
+
+    }
 }
 
 

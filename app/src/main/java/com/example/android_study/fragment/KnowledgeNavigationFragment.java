@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.android_study.presenter.KnowledgeNavigationPresenter;
 
-public class KnowledgeNavigationFragment extends MvpFragment<KnowledgeNavigationPresenter> {
+public class KnowledgeNavigationFragment extends BaseFragment<KnowledgeNavigationPresenter> {
     public static KnowledgeNavigationFragment create() {
         return new KnowledgeNavigationFragment();
     }
@@ -29,6 +29,11 @@ public class KnowledgeNavigationFragment extends MvpFragment<KnowledgeNavigation
     }
 
     @Override
+    protected KnowledgeNavigationPresenter createPresenter() {
+        return new KnowledgeNavigationPresenter();
+    }
+
+    @Override
     protected int getLayoutRes() {
         return 0;
     }
@@ -38,13 +43,24 @@ public class KnowledgeNavigationFragment extends MvpFragment<KnowledgeNavigation
 
     }
 
-    @Override
-    protected KnowledgeNavigationPresenter initPresenter() {
-        return new KnowledgeNavigationPresenter();
-    }
 
     @Override
     protected void loadData() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void succeed() {
+
+    }
+
+    @Override
+    public void error() {
 
     }
 }

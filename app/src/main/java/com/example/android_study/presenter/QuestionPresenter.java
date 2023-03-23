@@ -1,6 +1,7 @@
 package com.example.android_study.presenter;
 
-import com.example.android_study.mvp.MvpPresenter;
+import com.example.android_study.view.HomeView;
+import com.example.lib_core_mvp.presenter.BasePresenter;
 
-public class QuestionPresenter extends MvpPresenter {
+public class QuestionPresenter extends BasePresenter<HomeView> {
 }

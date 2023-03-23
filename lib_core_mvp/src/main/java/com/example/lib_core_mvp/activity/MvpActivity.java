@@ -1,22 +1,17 @@
-package com.example.android_study.mvp;
+package com.example.lib_core_mvp.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android_study.mvp.MvpPresenter;
-import com.example.android_study.mvp.MvpView;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.example.lib_core_mvp.presenter.MvpPresenter;
+import com.example.lib_core_mvp.view.MvpView;
 
 public abstract class MvpActivity<P extends MvpPresenter> extends AppCompatActivity implements MvpView {
-    public P presenter;
-    public Unbinder mUnbinder = null;
+    private P mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,38 +24,17 @@ public abstract class MvpActivity<P extends MvpPresenter> extends AppCompatActiv
         }*/
         initWindow();
         setContentView(getLayoutId());
-        presenter = initPresenter();
-        if (presenter != null) {
-            presenter.attach(this);
+        mPresenter = getPresenter();
+        if (mPresenter != null) {
+            mPresenter.attachView(this);
         }
-        mUnbinder = ButterKnife.bind(this);
         initialize();
 
     }
 
-    protected void initialize() {
-        initView();
-        loadData();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (presenter != null) {
-            presenter.detachView();
-        }
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
-    }
-
-
-    @Override
-    public Context getContext() {
-        return getActivity();
-    }
-
+    /**
+     * 做一些窗口的设置
+     */
     protected abstract void initWindow();
 
     /**
@@ -69,9 +43,20 @@ public abstract class MvpActivity<P extends MvpPresenter> extends AppCompatActiv
     public abstract int getLayoutId();
 
     /**
-     * 初始化presenter
+     * 子类通过调用该方法，获得绑定的presenter
      */
-    protected abstract P initPresenter();
+    protected P getPresenter() {
+        if (mPresenter == null) {
+            mPresenter = createPresenter();
+            mPresenter.attachView(this);
+        }
+        return mPresenter;
+    }
+
+    protected void initialize() {
+        initView();
+        loadData();
+    }
 
     /**
      * 初始化控件
@@ -83,7 +68,20 @@ public abstract class MvpActivity<P extends MvpPresenter> extends AppCompatActiv
      */
     protected abstract void loadData();
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.destroy();
+            mPresenter = null;
+        }
+    }
+
+    @NonNull
+    public abstract P createPresenter();
+
     protected Activity getActivity() {
         return this;
     }
+
 }

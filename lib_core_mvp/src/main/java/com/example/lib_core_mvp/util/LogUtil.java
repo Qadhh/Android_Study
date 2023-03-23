@@ -1,9 +1,9 @@
-package com.example.android_study.util;
+package com.example.lib_core_mvp.util;
 
 import android.util.Log;
 
 public class LogUtil {
-    private final static boolean DEBUG = true;
+    public  static boolean DEBUG ;
 
     private static final String TAG = "log_tag";
 
